@@ -1,25 +1,50 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { Drawer, List, ListItem, ListItemText, Divider, IconButton } from '@mui/material';
+import { Home, People, Web, ShoppingCart, Assignment, Logout } from '@mui/icons-material';
 
-const Sidebar = () => {
+const SideNav = ({ open, onClose }) => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    navigate('/login');
+  };
+
   return (
-    <div className="bg-gray-800 text-white w-64 space-y-6 py-7 px-2">
-      <div className="text-white flex items-center space-x-2 px-4">
-        <span className="text-2xl font-extrabold">LamaMidea</span>
+    <Drawer anchor="left" open={open} onClose={onClose}>
+      <div className="w-64">
+        <List>
+          <ListItem button component={NavLink} to="/" onClick={onClose}>
+            <Home />
+            <ListItemText primary="Dashboard" className="ml-2" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/users" onClick={onClose}>
+            <People />
+            <ListItemText primary="Users" className="ml-2" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/websites" onClick={onClose}>
+            <Web />
+            <ListItemText primary="Websites" className="ml-2" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/packages" onClick={onClose}>
+            <Assignment />
+            <ListItemText primary="Packages" className="ml-2" />
+          </ListItem>
+          <ListItem button component={NavLink} to="/orders" onClick={onClose}>
+            <ShoppingCart />
+            <ListItemText primary="Orders" className="ml-2" />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={handleLogout}>
+            <Logout />
+            <ListItemText primary="Logout" className="ml-2" />
+          </ListItem>
+        </List>
       </div>
-      <nav>
-        <Link to="/" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">Dashboard</Link>
-        <div>
-          <p className="block py-2.5 px-4 text-gray-400">Products</p>
-          <Link to="/products" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">All Products</Link>
-          <Link to="/categories" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">Categories</Link>
-          <Link to="/orders" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">Orders</Link>
-          <p className="block py-2.5 px-4 text-gray-400">Reports</p>
-          <Link to="/analytics" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">Analytics</Link>
-        </div>
-      </nav>
-    </div>
+    </Drawer>
   );
 };
 
-export default Sidebar;
+export default SideNav;

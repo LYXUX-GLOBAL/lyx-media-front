@@ -7,6 +7,7 @@ import SalesStatistics from '../Components/SalesStatistics';
 import SalesByCategory from '../Components/SalesByCategory';
 
 const Dashboard = () => {
+  console.log(localStorage.getItem("token")); 
   return (
     <div className="flex">
       <div className="flex-1 p-10 text-2xl font-bold">
