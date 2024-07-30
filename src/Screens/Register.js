@@ -121,7 +121,7 @@ const Register = () => {
         <p className="mt-4 text-center text-sm text-gray-600">
           <button
             type="button"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/')}
             className="font-medium text-indigo-600 hover:text-indigo-500"
           >
             I'm Already A User
