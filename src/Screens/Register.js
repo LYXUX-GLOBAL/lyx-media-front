@@ -15,7 +15,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5001/api/users/admin/signup', {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/admin/signup`, {
         username,
         email,
         password,
@@ -31,7 +31,7 @@ const Register = () => {
 
   const requestOtp = async () => {
     try {
-      await axios.post('http://localhost:5001/api/users/admin/request-otp', {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/users/admin/request-otp`, {
         email,
       });
       setOtpRequested(true);

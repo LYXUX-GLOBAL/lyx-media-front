@@ -29,7 +29,7 @@ const Websites = () => {
   const fetchWebsites = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/websites', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/websites`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -52,7 +52,7 @@ const Websites = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5001/api/websites',
+        `${process.env.REACT_APP_API_BASE_URL}/websites`,
         { name, link },
         { headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const Websites = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5001/api/websites/${currentId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/websites/${currentId}`,
         { name, link },
         { headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const Websites = () => {
   const handleDeleteWebsite = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5001/api/websites/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/websites/${id}`, {
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token },

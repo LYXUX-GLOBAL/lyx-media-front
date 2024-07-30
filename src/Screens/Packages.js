@@ -43,7 +43,7 @@ const Packages = () => {
   const fetchPackages = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/packages', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/packages`, {
         headers: { 
             'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -58,7 +58,7 @@ const Packages = () => {
   const fetchWebsites = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/websites', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/websites`, {
         headers: { 
             'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -79,7 +79,7 @@ const Packages = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5001/api/packages',
+        `${process.env.REACT_APP_API_BASE_URL}/packages`,
         formData,
         { headers: { 
             'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const Packages = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5001/api/packages/${currentId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/packages/${currentId}`,
         formData,
         { headers: { 
             'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ const Packages = () => {
   const handleDeletePackage = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5001/api/packages/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/packages/${id}`, {
         headers: { 
             'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token

@@ -37,7 +37,7 @@ const Users = () => {
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/users/all', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/all`, {
         headers: { 
             'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -57,7 +57,7 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5001/api/users/all',
+        `${process.env.REACT_APP_API_BASE_URL}/users/all`,
         formData,
         { headers: { 
             'Content-Type': 'application/json',
@@ -81,7 +81,7 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5001/api/users/all/${currentId}`,
+        `${process.env.REACT_APP_API_BASE_URL}/users/all/${currentId}`,
         formData,
         { headers: { 
             'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const Users = () => {
   const handleDeleteUser = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5001/api/users/all/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}users/all/${id}`, {
         headers: { 
             'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token

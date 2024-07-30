@@ -38,7 +38,7 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/orders', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/orders`, {
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -53,7 +53,7 @@ const Orders = () => {
   const fetchPackages = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5001/api/packages', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/packages`, {
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
@@ -74,7 +74,7 @@ const Orders = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.post(
-        'http://localhost:5001/api/orders',
+        `${process.env.REACT_APP_API_BASE_URL}/orders`,
         formData,
         { headers: { 
           'Content-Type': 'application/json',
@@ -98,7 +98,7 @@ const Orders = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.put(
-        `http://localhost:5001/api/orders/${currentId}/status`,
+        `${process.env.REACT_APP_API_BASE_URL}/orders/${currentId}/status`,
         { status: formData.status },
         { headers: { 
           'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const Orders = () => {
   const handleDeleteOrder = async (id) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/orders/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`, {
         headers: { 
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
