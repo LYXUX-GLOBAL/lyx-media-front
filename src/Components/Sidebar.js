@@ -15,6 +15,9 @@ const SideNav = ({ open, onClose }) => {
   return (
     <Drawer anchor="left" open={open} onClose={onClose}>
       <div className="w-64">
+        <h2 style={{ fontWeight: 700, fontSize: 30, textAlign: 'center' }} className="gradient-text" >
+          LYX-Media
+        </h2>
         <List>
           <ListItem button component={NavLink} to="/" onClick={onClose}>
             <Home />
