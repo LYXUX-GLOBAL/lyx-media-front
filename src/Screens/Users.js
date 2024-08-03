@@ -20,7 +20,10 @@ import {
   InputLabel,
   FormControl
 } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { red } from '@mui/material/colors';
+import AddIcon from '@mui/icons-material/Add';
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -29,7 +32,7 @@ const Users = () => {
     username: '',
     email: '',
     password: '',
-    role:'',
+    role: '',
   });
   const [editMode, setEditMode] = useState(false);
   const [currentId, setCurrentId] = useState(null);
@@ -38,10 +41,10 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/users/all`, {
-        headers: { 
-            'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setUsers(response.data);
     } catch (error) {
@@ -59,17 +62,19 @@ const Users = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/users/all`,
         formData,
-        { headers: { 
+        {
+          headers: {
             'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-         } }
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setUsers([...users, response.data]);
       setFormData({
         username: '',
         email: '',
         password: '',
-        role:'',
+        role: '',
       });
       setOpen(false);
     } catch (error) {
@@ -83,17 +88,19 @@ const Users = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_URL}/users/all/${currentId}`,
         formData,
-        { headers: { 
+        {
+          headers: {
             'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-         } }
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setUsers(users.map((user) => (user._id === currentId ? response.data : user)));
       setFormData({
         username: '',
         email: '',
         password: '',
-        role:'',
+        role: '',
       });
       setCurrentId(null);
       setEditMode(false);
@@ -107,10 +114,10 @@ const Users = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.delete(`${process.env.REACT_APP_API_BASE_URL}users/all/${id}`, {
-        headers: { 
-            'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setUsers(users.filter((user) => user._id !== id));
     } catch (error) {
@@ -123,7 +130,7 @@ const Users = () => {
       username: user.username,
       email: user.email,
       password: '',
-      role:'', // Leave password empty for security reasons
+      role: '', // Leave password empty for security reasons
     });
     setCurrentId(user._id);
     setEditMode(true);
@@ -135,7 +142,7 @@ const Users = () => {
       username: '',
       email: '',
       password: '',
-      role:'',
+      role: '',
     });
     setEditMode(false);
     setOpen(true);
@@ -150,12 +157,26 @@ const Users = () => {
 
   return (
     <div className="p-4">
-      <Button variant="contained" color="primary" onClick={handleAddClick}>
-        Add User
-      </Button>
+
       <TableContainer component={Paper} className="mt-4">
         <Table>
           <TableHead>
+            <TableRow>
+
+              <TableCell align="left" colSpan={4}>
+                Users
+              </TableCell>
+              <TableCell align="left" colSpan={1}>
+                <Button variant="contained" startIcon={<AddIcon />} sx={{
+                  backgroundColor: 'black', color: 'white', '&:hover': {
+                    backgroundColor: 'darkgray', color: 'black'
+                  },
+                }} onClick={handleAddClick}>
+                  Add New
+                </Button>
+              </TableCell>
+
+            </TableRow>
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Username</TableCell>
@@ -173,10 +194,10 @@ const Users = () => {
                 <TableCell>{user.role}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEditClick(user)}>
-                    <Edit />
+                    <EditOutlinedIcon />
                   </IconButton>
                   <IconButton onClick={() => handleDeleteUser(user._id)}>
-                    <Delete />
+                    <DeleteOutlineIcon sx={{ color: red[500] }} />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -194,6 +215,7 @@ const Users = () => {
             type="text"
             fullWidth
             name="username"
+            size="small"
             value={formData.username}
             onChange={handleChange}
           />
@@ -203,6 +225,7 @@ const Users = () => {
             type="email"
             fullWidth
             name="email"
+            size="small"
             value={formData.email}
             onChange={handleChange}
           />
@@ -211,19 +234,26 @@ const Users = () => {
             label="Password"
             type="password"
             fullWidth
+            size="small"
             name="password"
             value={formData.password}
             onChange={handleChange}
             placeholder={editMode ? "Leave blank to keep current password" : ""}
+            sx={{ fontFamily: 'Poppins' }}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="secondary">
+          <Button variant="contained" color="error" onClick={() => setOpen(false)} >
             Cancel
           </Button>
           <Button
             onClick={editMode ? handleUpdateUser : handleAddUser}
-            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: 'black', color: 'white', '&:hover': {
+                backgroundColor: 'darkgray', color: 'black'
+              },
+            }}
           >
             {editMode ? 'Update' : 'Add'}
           </Button>

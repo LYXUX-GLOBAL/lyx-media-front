@@ -16,7 +16,10 @@ import {
   Paper,
   IconButton,
 } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { red } from '@mui/material/colors';
+import AddIcon from '@mui/icons-material/Add';
 
 const Websites = () => {
   const [websites, setWebsites] = useState([]);
@@ -54,10 +57,12 @@ const Websites = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/websites`,
         { name, link },
-        { headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-         } }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setWebsites([...websites, response.data]);
       setName('');
@@ -74,10 +79,12 @@ const Websites = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_URL}/websites/${currentId}`,
         { name, link },
-        { headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        } }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setWebsites(websites.map((website) => (website._id === currentId ? response.data : website)));
       setName('');
@@ -94,9 +101,10 @@ const Websites = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/websites/${id}`, {
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token },
+          'Authorization': 'Bearer ' + token
+        },
       });
       setWebsites(websites.filter((website) => website._id !== id));
     } catch (error) {
@@ -121,12 +129,26 @@ const Websites = () => {
 
   return (
     <div className="p-4">
-      <Button variant="contained" color="primary" onClick={handleAddClick}>
-        Add Website
-      </Button>
+
       <TableContainer component={Paper} className="mt-4">
         <Table>
           <TableHead>
+            <TableRow>
+
+              <TableCell align="left" colSpan={3}>
+                Websites
+              </TableCell>
+              <TableCell align="left" colSpan={1}>
+                <Button variant="contained" startIcon={<AddIcon />} sx={{
+                  backgroundColor: 'black', color: 'white', '&:hover': {
+                    backgroundColor: 'darkgray', color: 'black'
+                  },
+                }} onClick={handleAddClick}>
+                  Add New
+                </Button>
+              </TableCell>
+
+            </TableRow>
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Name</TableCell>
@@ -142,10 +164,10 @@ const Websites = () => {
                 <TableCell>{website.link}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleEditClick(website)}>
-                    <Edit />
+                    <EditOutlinedIcon />
                   </IconButton>
                   <IconButton onClick={() => handleDeleteWebsite(website._id)}>
-                    <Delete />
+                    <DeleteOutlineIcon sx={{ color: red[500] }} />
                   </IconButton>
                 </TableCell>
               </TableRow>
@@ -163,6 +185,7 @@ const Websites = () => {
             label="Name"
             type="text"
             fullWidth
+            size="small"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
@@ -171,17 +194,23 @@ const Websites = () => {
             label="Link"
             type="text"
             fullWidth
+            size="small"
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="secondary">
+          <Button variant="contained" color="error" onClick={() => setOpen(false)} >
             Cancel
           </Button>
           <Button
             onClick={editMode ? handleUpdateWebsite : handleAddWebsite}
-            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: 'black', color: 'white', '&:hover': {
+                backgroundColor: 'darkgray', color: 'black'
+              },
+            }}
           >
             {editMode ? 'Update' : 'Add'}
           </Button>

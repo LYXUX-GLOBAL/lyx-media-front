@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import SideNav from './Sidebar';
+import '../App.css';
+import { COLORS } from "../utils/Color";
 const MainLayout = ({ children }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -12,17 +14,17 @@ const MainLayout = ({ children }) => {
   return (
     <div className="flex h-screen">
       <SideNav open={isDrawerOpen} onClose={toggleDrawer} />
-      <AppBar position="fixed">
+      <AppBar sx={{ backgroundColor: COLORS.white }} position="fixed">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer}>
+          <IconButton edge="start" color={COLORS.black} aria-label="menu" onClick={toggleDrawer}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <h2 style={{ fontWeight: 700, fontSize: 30 }} className="gradient-text" >
             LYX-Media
-          </Typography>
+          </h2>
         </Toolbar>
       </AppBar>
-      <main className="flex-1 mt-16 p-4 overflow-auto">
+      <main className="flex-1 mt-16 p-4">
         {children}
       </main>
     </div>

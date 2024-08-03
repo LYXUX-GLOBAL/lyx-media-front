@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  font-family: 'Poppins';
 }
 
 .App-logo {
@@ -28,10 +29,18 @@
   color: #61dafb;
 }
 
+.gradient-text {
+  font-family: 'Roboto';
+  background: linear-gradient(to right, #E41414, #F21EEA);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

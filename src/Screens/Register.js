@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../App.css';
+import { Button } from '@mui/material';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -44,7 +46,9 @@ const Register = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-6 text-pink-500">LYX-Media</h2>
+        <h2 style={{ fontWeight: 700, fontSize: 50, textAlign: 'center' }} className="gradient-text" >
+          LYX-Media
+        </h2>
         {error && <p className="mb-4 text-center text-red-500">{error}</p>}
         <form onSubmit={handleRegister}>
           <div className="mb-4">
@@ -111,12 +115,18 @@ const Register = () => {
             {otpError && <p className="mt-2 text-red-500 text-sm">{otpError}</p>}
             {otpRequested && !otpError && <p className="mt-2 text-green-500 text-sm">OTP sent to admin`s email.</p>}
           </div>
-          <button
+          <Button
             type="submit"
-            className="w-full py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-red-500 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3, mb: 5,
+              background: `linear-gradient(90deg, rgba(238,0,153,1) 0%,rgba(255, 0, 58, 1) 100%)`
+            }}
+
           >
             Register
-          </button>
+          </Button>
         </form>
         <p className="mt-4 text-center text-sm text-gray-600">
           <button
