@@ -24,7 +24,7 @@ const MainLayout = ({ children }) => {
           </h2>
         </Toolbar>
       </AppBar>
-      <main className="flex-1 mt-16 p-4 overflow-auto">
+      <main className="flex-1 mt-16 p-4">
         {children}
       </main>
     </div>

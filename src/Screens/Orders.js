@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
+  Grid,
   Button,
   Dialog,
   DialogActions,
@@ -20,7 +21,10 @@ import {
   InputLabel,
   FormControl
 } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { red } from '@mui/material/colors';
+import AddIcon from '@mui/icons-material/Add';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -39,10 +43,10 @@ const Orders = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/orders`, {
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setOrders(response.data);
     } catch (error) {
@@ -54,10 +58,10 @@ const Orders = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/packages`, {
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setPackages(response.data);
     } catch (error) {
@@ -76,10 +80,12 @@ const Orders = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/orders`,
         formData,
-        { headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-         } }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setOrders([...orders, response.data]);
       setFormData({
@@ -100,10 +106,12 @@ const Orders = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_URL}/orders/${currentId}/status`,
         { status: formData.status },
-        { headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-         } }
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setOrders(orders.map((order) => (order._id === currentId ? response.data : order)));
       setFormData({
@@ -124,10 +132,10 @@ const Orders = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/orders/${id}`, {
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setOrders(orders.filter((order) => order._id !== id));
     } catch (error) {
@@ -168,12 +176,27 @@ const Orders = () => {
 
   return (
     <div className="p-4">
-      <Button variant="contained" color="primary" onClick={handleAddClick}>
-        Add Order
-      </Button>
+
       <TableContainer component={Paper} className="mt-4">
         <Table>
           <TableHead>
+            <TableRow>
+
+              <TableCell align="left" colSpan={6}>
+                Orders
+              </TableCell>
+              <TableCell align="left" colSpan={1}>
+                <Button variant="contained" startIcon={<AddIcon />} sx={{
+                  backgroundColor: 'black', color: 'white', '&:hover': {
+                    backgroundColor: 'darkgray', color: 'black'
+                  },
+                }} onClick={handleAddClick}>
+                  Add New
+                </Button>
+
+              </TableCell>
+
+            </TableRow>
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Package</TableCell>
@@ -197,10 +220,10 @@ const Orders = () => {
                   <TableCell>{order.status}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditClick(order)}>
-                      <Edit />
+                      <EditOutlinedIcon />
                     </IconButton>
                     <IconButton onClick={() => handleDeleteOrder(order._id)}>
-                      <Delete />
+                      <DeleteOutlineIcon sx={{ color: red[500] }} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -213,7 +236,7 @@ const Orders = () => {
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{editMode ? 'Edit Order' : 'Add Order'}</DialogTitle>
         <DialogContent>
-          <FormControl fullWidth margin="dense">
+          <FormControl fullWidth size="small" margin="dense">
             <InputLabel id="packageId-label">Package</InputLabel>
             <Select
               labelId="packageId-label"
@@ -231,33 +254,52 @@ const Orders = () => {
           </FormControl>
           <TextField
             margin="dense"
-            label="Total Price"
-            type="number"
-            fullWidth
-            name="totalPrice"
-            value={formData.totalPrice}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Total Unit"
-            type="number"
-            fullWidth
-            name="totalUnit"
-            value={formData.totalUnit}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
             label="Link"
             type="text"
             fullWidth
+            size="small"
             name="link"
             value={formData.link}
             onChange={handleChange}
           />
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}
+          >
+            <Grid
+              item xs={6}
+            >
+              <TextField
+                margin="dense"
+                label="Total Price"
+                type="number"
+                fullWidth
+                size="small"
+                name="totalPrice"
+                value={formData.totalPrice}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid
+              item xs={6}
+            >
+              <TextField
+                margin="dense"
+                label="Total Unit"
+                type="number"
+                fullWidth
+                size="small"
+                name="totalUnit"
+                value={formData.totalUnit}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
           {editMode && (
-            <FormControl fullWidth margin="dense">
+            <FormControl fullWidth size="small" margin="dense">
               <InputLabel id="status-label">Status</InputLabel>
               <Select
                 labelId="status-label"
@@ -274,12 +316,17 @@ const Orders = () => {
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="secondary">
+          <Button variant="contained" color="error" onClick={() => setOpen(false)} >
             Cancel
           </Button>
           <Button
             onClick={editMode ? handleUpdateOrder : handleAddOrder}
-            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: 'black', color: 'white', '&:hover': {
+                backgroundColor: 'darkgray', color: 'black'
+              },
+            }}
           >
             {editMode ? 'Update' : 'Add'}
           </Button>

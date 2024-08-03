@@ -18,9 +18,12 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  FormControl
+  FormControl, Grid
 } from '@mui/material';
-import { Edit, Delete } from '@mui/icons-material';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { red } from '@mui/material/colors';
+import AddIcon from '@mui/icons-material/Add';
 
 const Packages = () => {
   const [packages, setPackages] = useState([]);
@@ -44,10 +47,10 @@ const Packages = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/packages`, {
-        headers: { 
-            'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setPackages(response.data);
     } catch (error) {
@@ -59,10 +62,10 @@ const Packages = () => {
     try {
       const token = localStorage.getItem('token');
       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/websites`, {
-        headers: { 
-            'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setWebsites(response.data);
     } catch (error) {
@@ -81,10 +84,12 @@ const Packages = () => {
       const response = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/packages`,
         formData,
-        { headers: { 
+        {
+          headers: {
             'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-        } }
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setPackages([...packages, response.data]);
       setFormData({
@@ -110,10 +115,12 @@ const Packages = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_API_BASE_URL}/packages/${currentId}`,
         formData,
-        { headers: { 
+        {
+          headers: {
             'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token
-         } }
+            'Authorization': 'Bearer ' + token
+          }
+        }
       );
       setPackages(packages.map((pkg) => (pkg._id === currentId ? response.data : pkg)));
       setFormData({
@@ -139,10 +146,10 @@ const Packages = () => {
     try {
       const token = localStorage.getItem('token');
       await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/packages/${id}`, {
-        headers: { 
-            'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + token
-         },
+        },
       });
       setPackages(packages.filter((pkg) => pkg._id !== id));
     } catch (error) {
@@ -192,12 +199,27 @@ const Packages = () => {
 
   return (
     <div className="p-4">
-      <Button variant="contained" color="primary" onClick={handleAddClick}>
-        Add Package
-      </Button>
+
       <TableContainer component={Paper} className="mt-4">
         <Table>
           <TableHead>
+            <TableRow>
+
+              <TableCell align="left" colSpan={10}>
+                Packages
+              </TableCell>
+              <TableCell align="left" colSpan={1}>
+                <Button variant="contained" startIcon={<AddIcon />} sx={{
+                  backgroundColor: 'black', color: 'white', '&:hover': {
+                    backgroundColor: 'darkgray', color: 'black'
+                  },
+                }} onClick={handleAddClick}>
+                  Add New
+                </Button>
+
+              </TableCell>
+
+            </TableRow>
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Website Name</TableCell>
@@ -229,10 +251,10 @@ const Packages = () => {
                   <TableCell>{pkg.description}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleEditClick(pkg)}>
-                      <Edit />
+                      <EditOutlinedIcon />
                     </IconButton>
                     <IconButton onClick={() => handleDeletePackage(pkg._id)}>
-                      <Delete />
+                      <DeleteOutlineIcon sx={{ color: red[500] }} />
                     </IconButton>
                   </TableCell>
                 </TableRow>
@@ -245,102 +267,161 @@ const Packages = () => {
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>{editMode ? 'Edit Package' : 'Add Package'}</DialogTitle>
         <DialogContent>
-          <FormControl fullWidth margin="dense">
-            <InputLabel id="websiteId-label">Website</InputLabel>
-            <Select
-              labelId="websiteId-label"
-              id="websiteId"
-              name="websiteId"
-              value={formData.websiteId}
-              onChange={handleChange}
+          <Grid
+            container
+            direction="row"
+            justifyContent="center"
+            alignItems="center"
+            spacing={2}>
+            <Grid item xs={6}>
+              <FormControl fullWidth size="small" margin="dense">
+                <InputLabel id="websiteId-label">Website</InputLabel>
+                <Select
+                  labelId="websiteId-label"
+                  id="websiteId"
+                  name="websiteId"
+                  value={formData.websiteId}
+                  onChange={handleChange}
+                >
+                  {websites.map((website) => (
+                    <MenuItem key={website._id} value={website._id}>
+                      {website.name + ' - ' + website.link}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                margin="dense"
+                label="Social Media"
+                type="text"
+                fullWidth
+                size="small"
+                name="socialMedia"
+                value={formData.socialMedia}
+                onChange={handleChange}
+              />
+              <TextField
+                margin="dense"
+                label="Type"
+                type="text"
+                fullWidth
+                size="small"
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+              />
+              <Grid
+                container
+                direction="row"
+                justifyContent="center"
+                alignItems="center"
+                spacing={1}
+              >
+                <Grid
+                  item xs={6}
+                >
+                  <TextField
+                    margin="dense"
+                    label="Unit Price"
+                    type="number"
+                    fullWidth
+                    size="small"
+                    name="unitPrice"
+                    value={formData.unitPrice}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid
+                  item xs={6}
+                >
+                  <TextField
+                    margin="dense"
+                    label="Discount"
+                    type="number"
+                    fullWidth
+                    size="small"
+                    name="discount"
+                    value={formData.discount}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid
+                  item xs={6}
+                >
+
+                  <TextField
+                    margin="dense"
+                    label="Min Unit"
+                    type="number"
+                    fullWidth
+                    size="small"
+
+                    name="minUnit"
+                    value={formData.minUnit}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    margin="dense"
+                    label="Max Unit"
+                    type="number"
+                    fullWidth
+                    size="small"
+                    name="maxUnit"
+                    value={formData.maxUnit}
+                    onChange={handleChange}
+                  />
+                </Grid>
+              </Grid>
+
+
+
+            </Grid>
+
+
+            <Grid
+              item xs={6}
             >
-              {websites.map((website) => (
-                <MenuItem key={website._id} value={website._id}>
-                  {website.name + ' - ' + website.link}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            margin="dense"
-            label="Social Media"
-            type="text"
-            fullWidth
-            name="socialMedia"
-            value={formData.socialMedia}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Type"
-            type="text"
-            fullWidth
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Min Unit"
-            type="number"
-            fullWidth
-            name="minUnit"
-            value={formData.minUnit}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Max Unit"
-            type="number"
-            fullWidth
-            name="maxUnit"
-            value={formData.maxUnit}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Unit Price"
-            type="number"
-            fullWidth
-            name="unitPrice"
-            value={formData.unitPrice}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Discount"
-            type="number"
-            fullWidth
-            name="discount"
-            value={formData.discount}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Header"
-            type="text"
-            fullWidth
-            name="header"
-            value={formData.header}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            label="Description"
-            type="text"
-            fullWidth
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
+
+              <TextField
+                margin="dense"
+                label="Header"
+                type="text"
+                fullWidth
+                size="small"
+                name="header"
+                value={formData.header}
+                onChange={handleChange}
+              />
+              <TextField
+                margin="dense"
+                label="Description"
+                type="text"
+                fullWidth
+                size="small"
+                multiline
+                rows={8}
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+              />
+            </Grid>
+          </Grid>
+
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color="secondary">
+          <Button variant="contained" color="error" onClick={() => setOpen(false)}>
             Cancel
           </Button>
           <Button
             onClick={editMode ? handleUpdatePackage : handleAddPackage}
-            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: 'black', color: 'white', '&:hover': {
+                backgroundColor: 'darkgray', color: 'black'
+              },
+            }}
           >
             {editMode ? 'Update' : 'Add'}
           </Button>

@@ -7,24 +7,21 @@ import SalesStatistics from '../Components/SalesStatistics';
 import SalesByCategory from '../Components/SalesByCategory';
 
 const Dashboard = () => {
-  console.log(localStorage.getItem("token")); 
+  console.log(localStorage.getItem("token"));
   return (
-    <div className="flex">
-      <div className="flex-1 p-10 text-2xl font-bold">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="lg:col-span-1">
-            <WelcomeCard />
+    <div >
+      <h1 style={{ fontWeight: 400, fontSize: 40, fontFamily: 'Poppins' }}>Welcome Back</h1>
+      <div class="grid md:grid-flow-col sm:grid-flow-row gap-4">
+
+        <div class="md:col-span-2 sm:col-span-1">
+          <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 border-solid border-2 border-stone-400 rounded-md p-4">
+            <OrderCard />
+            <OrderCard />
+            <OrderCard />
           </div>
-          <OrderCard />
-          <OrderCard />
-          <OrderCard />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-          <div className="lg:col-span-2">
-            <SalesStatistics />
-          </div>
-          <SalesByCategory />
-        </div>
+        <div class="md:col-span-2 sm:col-span-1 border-solid border-2 border-stone-400 rounded-md p-4"><SalesStatistics /></div>
+        <div class="md:row-span-2  sm:col-span-1  border-solid border-2 border-stone-400 rounded-md p-4"><SalesByCategory /></div>
       </div>
     </div>
   );
